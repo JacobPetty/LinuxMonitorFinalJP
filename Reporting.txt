@@ -1,0 +1,37 @@
+The methods that were used to retrieve and display the memory usage, the disk usage, the cpu usage, and the current running processes did accomplish their tasks, however the command I used to display the active processes did not display as well as I had hoped. While it gathered data it did not output the information in an easy to read and understand format like the other commands had done (due to -h).
+
+    top -bn1 | grep "Cpu(s)"
+
+    free -h
+
+    df -h 
+
+    ps -e
+
+These are the commands I used to retrieve the necessary information from the system. From my output, however, I knew I needed to alter something about the final command or include additional commands in order to format the output how I wanted it. Therefore, I used additional commands to customize the output of the ps command. 
+
+    ps -eo %cpu,cmd,%mem,pid --sort=-%cpu | head -n 10
+
+	I ended up with this line for displaying my custom visual of the top running processes. I was able to customize the rest of this line with the addition of the option command (-o). I added the parent id command (pid) to assign each displayed process with a corresponding identification number. I used the cmd command to display the name of the current running processes within the custom format. I also found additional commands that I found to be quite informative and useful, %mem and %cpu. These commands allowed me to show the percentage of both memory and CPU for each individual process running on the system.
+I then wanted to list these processes in descending order of CPU usage. I found that the addition of --sort=-%cpu allowed me to accomplish this goal. The --sort= function allows me to sort my output display, and the -%cpu determines the output as the percentage of CPU usage in descending order.
+
+#!/bin/bash
+
+echo "======================="
+echo "  Linux Monitor"
+echo "======================="
+echo ""
+
+    top -bn1 | grep "Cpu(s)" 
+    echo ""
+
+    free -h
+    echo ""
+
+    df -h 
+    echo ""
+
+    ps -eo %cpu, cmd,%mem,pid --sort=-%cpu
+    echo ""
+
+	Therefore, this is the current script I have for the monitor. Moving forward, I will continue to update the format to be easier read and understood by the user. I will also aim to label the information provided with clear and accurate titles.
