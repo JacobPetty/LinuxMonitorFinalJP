@@ -1,0 +1,59 @@
+Jacob Petty
+jpett12@okstate.edu
+Final Project Report:
+
+The project I chose to do was to develop a Linux Monitor System to read and display system metrics like CPU usage, memory usage, disk space, and the current running 
+process on the system. I specifically chose this project because I always like to use monitor programs, such as Task Manager for Windows, to check the usage of my 
+hardware and overall system performance. I enjoy being able to see the amount of strain I put on my system when I run certain processes. A system monitor allows me to 
+accurately test the performance of my hardware, which is very important to me. I particularly find this important, as I like to make sure that I am not harming any of 
+my hardware through overuse, but I am still using a healthy amount when rendering and working on projects. 
+The project that I constructed is just a simple monitor system for Linux. I made a simple shell-based interface that utilizes the commands top, free, df, and ps to 
+gather data from the system before displaying this information to the user in an easy to understand format. The main goals of this project were to accurately read the 
+usage of the system at a specific instance and output this data for the user. I intended to construct a monitor that would read the usage of the CPU, disk, and memory. 
+The monitor would also gather the processes that are currently running on the system at that same instance. I required specific commands to draw the information about 
+each metric. For the CPU, I used the top command to gather useful information regarding the CPU. After some research, I found that it was best to run this command in 
+batch mode and use only the first iteration. This would provide a quick, but effective, snapshot of the system's usage. I then included the grep command to search this 
+snapshot for anything pertaining to the CPU. 
+
+top -bn1 | grep "Cpu(s)"
+
+I used the free command command to get the total memory usage for that instance, and added -h to the line to put the data retrieved in a human readable format. 
+Similarly, I used the df command to find the overall disk usage with a following -h. 
+
+free -h
+df -h
+
+Most importantly, I utilized the ps command to read the current running processes. These commands are essential to the building of my Linux monitor system. From testing, 
+however, I figured I needed to edit something about the final command or include additional commands in order to format the data how I wanted it. Therefore, I used 
+additional commands to customize the output of the ps command. I was able to customize the rest of this line with the addition of the option command (-o). I added the 
+parent id command (pid) to assign each displayed process with a corresponding identification number. I used the cmd command to display the name of the current running 
+processes within the custom format. I also found additional commands that were extremely informative and useful for an accurate, real-time data stream, %mem and %cpu. 
+They allowed me to show the percentage of both memory and CPU for each individual process running on the system, which is very helpful when my main goal was to know what 
+processes are being overutilized or are simply taking too many system resources. I then wanted to list these processes in descending order of CPU usage. I found that 
+the addition of --sort=-%cpu allowed me to accomplish this goal. The --sort= function allows me to sort my output display, and the -%cpu determines the output as the 
+percentage of CPU usage in descending order. Finally, in my final version I realized that the monitor should probably only gather the larger processes running on the 
+system. Therefore, I utilized the head command at the end of the line to limit the number of returning processes for the output. I added -n which accounts for the 
+allotted number of lines. I then set this to 21 as the first line is the header and I wanted the monitor to return the top twenty processes.
+
+ps -eo %cpu,cmd,%mem,pid --sort=-%cpu | head -n 21
+
+	In order to appropriately display the outputs of each command, I put each command into its own method and used the echo command to display titles over each method's 
+    output and put space between these outputs. This was to create a much more organized format for the user when using the monitor.
+show_cpu() {
+echo "----- CPU Usage -----"}
+show_memory() {
+echo "----- Memory Usage -----"}
+show_disk() {
+echo "----- Disk Usage -----"}
+show_processes() {
+echo "----- Top Running Processes -----"}
+
+The issue that I was trying to resolve is for those who wish to search their systems to stop unnecessary processes from running in order to free up system resources and 
+to prevent the overuse of their hardware. For example, people working with older software and hardware may need more system resources to run more modern, typically 
+larger, programs than those working with more modern machines. These individuals need to check the usage of their system and need to know what processes are currently 
+running in order to identify these problematic processes. This is where my simple Linux monitor would become very helpful.
+
+My monitor reads the required system metrics and displays them to the user along with many of the processes currently running on the system. This would show them how 
+the current running processes are actively utilizing the system resources. This would certainly allow them to identify if any unnecessary processes are taking up too 
+much system usage, and are therefore problematic. By then stopping these processes they will achieve a more efficient process structure and will drastically increase 
+system performance.
